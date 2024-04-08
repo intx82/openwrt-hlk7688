@@ -1,14 +1,25 @@
 #!/bin/sh
 # Copyright (C) 2006 OpenWrt.org
+echo "INIT started"
+
 export INITRAMFS=1
+# mount -t proc proc /proc
 
 # switch to tmpfs to allow run daemons in jail on initramfs boot
 DIRS=$(echo *)
 NEW_ROOT=/new_root
 
 mkdir -p $NEW_ROOT
+echo "INIT started #2"
+
 mount -t tmpfs tmpfs $NEW_ROOT
 
-cp -pr $DIRS $NEW_ROOT
+echo "Copying files"
+
+# /bin/sh
+
+cp -prvd $DIRS $NEW_ROOT
+
+echo "running /sbin/init"
 
 exec switch_root $NEW_ROOT /sbin/init
